@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- <link rel="stylesheet" href="lantube.css"> -->
+    <style>
+        body {
+            background-color: black;
+        }
+
+        header {
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        section {
+            width: 500px;
+        }
+
+        ol li {
+            color: white;
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: flex-end;
+            height: 15px;
+            padding: 4px 0;
+            border-bottom: 1px solid gray;
+        }
+
+        ol li:last-child {
+            border: 0;
+        }
+
+        a {
+            color: #f53d3d;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+
+        a:hover {
+            color: #42bf2b;
+        }
+
+        a:focus {
+            outline: 0;
+        }
+
+        .noselect {
+            cursor: default;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        #stop {
+            font-size: 28px;
+            position: relative;
+            top: 2px;
+        }
+
+        #pause {
+            font-size: 20px;
+        }
+
+        #volDown {
+            font-weight: bold;
+            font-size: 30px;
+            position: relative;
+            top: 3px;
+        }
+
+        #volUp {
+            font-weight: bolder;
+            font-size: 23px;
+            position: relative;
+            top: 1px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>🎶 Lantube</header>
+    <div>
+        <a id="stop" class="noselect">◾</a>
+        <a id="pause" class="noselect">▮▮</a>
+        <a id="volDown" class="noselect">-</a>
+        <a id="volUp" class="noselect">+</a>
+    </div>
+    <section id="videos"></section>
+    <script src="popup.js"></script>
+</body>
+
+</html>

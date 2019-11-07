@@ -1,0 +1,39 @@
+button.btn-lantube, button.btn-lantube-added, button.btn-lantube-disabled {
+    display: inline-block;
+    border: none;
+    font-size: 2rem;
+    padding: .5rem 1rem;
+    margin: 0;
+    text-decoration: none;
+    color: #ffffff;
+    font-family: sans-serif;
+    line-height: 1;
+    cursor: pointer;
+    text-align: center;
+    transition: background 250ms ease-in-out, transform 150ms ease;
+    -webkit-appearance: none;
+    -moz-appearance: none;    
+}
+button.btn-lantube {
+    background: #cc5027;
+}
+button.btn-lantube:hover,
+button.btn-lantube:focus {
+    background: #d1603a;
+}
+button.btn-lantube-added:hover,
+button.btn-lantube-added:focus {
+    background: #2caa36;
+}
+button.btn-lantube-disabled:hover,
+button.btn-lantube-disabled:focus {
+    background: #838383;
+}
+button.btn-lantube:focus, button.btn-lantube-added:focus {
+    /* outline: 1px solid #fff;
+    outline-offset: -4px; */
+}
+
+button.btn-lantube:active, button.btn-lantube-added:active, button.btn-lantube-disabled:active {
+    transform: scale(0.99);
+}
