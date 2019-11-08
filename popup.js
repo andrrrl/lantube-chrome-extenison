@@ -42,9 +42,14 @@ function constructOptions(apiURL, videos) {
     document.getElementById('stop').addEventListener('click', (event) => {
         fetch(`${apiURL}api/player/stop`).then((stopped) => {
             if (stopped.ok) {
-                // let pause = document.getElementById('pause');
-                let playing = document.getElementById(st.videoId);
-                playing.classList.remove('playing');
+                fetch(`${apiURL}api/player/stats`).then((stats) => {
+                    if (stats.ok) {
+                        stats.json().then(st => {
+                            let playing = document.getElementById(st.videoId);
+                            playing.classList.remove('playing');
+                        });
+                    }
+                });
             }
         });
     });
