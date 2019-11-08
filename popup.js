@@ -1,31 +1,32 @@
-// Copyright 2018 The Chromium Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
-
 'use strict';
 
-// let changeColor = document.getElementById('changeColor');
-// chrome.storage.sync.get('color', function(data) {
-//   changeColor.style.backgroundColor = data.color;
-//   changeColor.setAttribute('value', data.color);
-// });
 let page = document.getElementById('videos');
 let lista = document.createElement('ol');
 
 function constructOptions(apiURL, videos) {
     for (let video of videos) {
+
         let title = document.createElement('li');
         title.innerText = video.videoInfo.title;
+        title.id = video.videoInfo.videoId;
+
+        let order = document.createElement('b');
+        order.innerText = video.order;
+
         let play = document.createElement('a');
         play.innerText = '▶'; // ‣
         play.addEventListener('click', function () {
+            let self = this;
             let playVideo = confirm(`¿Reproducir ${video.videoInfo.title}?`);
             if (playVideo) {
                 fetch(`${apiURL}api/player/stop`).then((stopped) => {
                     if (stopped.ok) {
                         fetch(`${apiURL}api/player/${video.videoInfo.videoId}/play`).then((response) => {
                             if (response.ok) {
-                                response.json().then(playing => console.log(playing));
+                                response.json().then(playing => {
+                                    self.classList.add('playing');
+                                    console.log(playing);
+                                });
                             }
                         });
                     }
@@ -33,28 +34,45 @@ function constructOptions(apiURL, videos) {
             }
         });
         lista.appendChild(title);
-        title.appendChild(play);
+        title.prepend(play);
+        title.prepend(order);
     }
     page.appendChild(lista);
 
     document.getElementById('stop').addEventListener('click', (event) => {
         fetch(`${apiURL}api/player/stop`).then((stopped) => {
             if (stopped.ok) {
-                let pause = document.getElementById('pause');
-                pause.innerText = '▮▮';
+                // let pause = document.getElementById('pause');
+                let playing = document.getElementById(st.videoId);
+                playing.classList.remove('playing');
             }
         });
     });
     document.getElementById('pause').addEventListener('click', (event) => {
         fetch(`${apiURL}api/player/pause`).then((paused) => {
             if (paused.ok) {
-                paused.json().then(playing => {
-                    let pause = document.getElementById('pause');
-                    if (pause.innerText === '▮▮') {
-                        pause.innerText = '▶';
-                    } else {
-                        pause.innerText = '▮▮';
-                    }
+                console.log({ paused });
+                paused.json().then(result => {
+                    console.log({ result });
+
+                    fetch(`${apiURL}api/player/stats`).then((stats) => {
+                        if (stats.ok) {
+                            stats.json().then(st => {
+                                let pause = document.getElementById('pause');
+                                let playing = document.getElementById(st.videoId);
+                                if (pause.classList.contains('paused')) {
+                                    pause.classList.remove('paused');
+                                    playing.classList.add('playing');
+                                } else {
+                                    pause.classList.add('paused');
+                                    playing.classList.remove('playing');
+                                }
+                            })
+                        }
+                    });
+
+
+
                 });
 
             }
@@ -81,14 +99,23 @@ chrome.storage.sync.get(['apiURL'], (result) => {
     fetch(`${result.apiURL}api/player/stats`).then((stats) => {
         if (stats.ok) {
             stats.json().then(st => {
+                // PAUSE
                 if (st.status === 'paused') {
                     let pause = document.getElementById('pause');
-                    pause.innerText = '▶';
+                    pause.classList.add('paused');
                 }
                 fetch(`${result.apiURL}api/videos`).then((response) => {
                     if (response.ok) {
                         response.json().then(videos => {
                             constructOptions(result.apiURL, videos);
+                            // CURRENT
+                            if (st.status === 'playing') {
+                                console.log(st.videoId);
+                                let playing = document.getElementById(st.videoId);
+                                playing.classList.add('playing');
+                                let pause = document.getElementById('pause');
+                                pause.classList.remove('paused');
+                            }
                         });
                     }
                 });
@@ -97,12 +124,3 @@ chrome.storage.sync.get(['apiURL'], (result) => {
     });
     return true;
 });
-
-// chrome.runtime.sendMessage({ ytid }, function (response) {
-//   console.log(response);
-//   buttons[key].innerText = '✔';
-//   buttons[key].classList.remove('btn-lantube');
-//   buttons[key].className = 'btn-lantube-added';
-//   buttons[key].removeEventListener('click', addVideo, false);
-
-// });
