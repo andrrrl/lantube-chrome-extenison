@@ -33,6 +33,7 @@
         }
 
         section {
+            color: white;
             width: 500px;
         }
 
@@ -58,9 +59,9 @@
         }
 
         ol li b {
+            min-width: 25px;
             margin: 0 .5rem;
             display: inline-block;
-            width: 16px;
             text-align: right;
         }
 
@@ -181,6 +182,19 @@
             position: relative;
             left: -3px;
         }
+
+        #playlist {
+            position: absolute;
+            right: 2px;
+            top: 2px;
+            color: #808080;
+            font-size: 14px;
+        }
+
+        .playlist {
+            color: rgb(214, 211, 33) !important;
+            font-weight: bold;
+        }
     </style>
 </head>
 
@@ -193,6 +207,7 @@
             <a id="pause" class="noselect"><span></span><span></span></a>
             <a id="volDown" class="noselect"><span></span></a>
             <a id="volUp" class="noselect"><span></span><span></span></a>
+            <div id="playlist">♓</div>
         </div>
     </header>
     <section id="videos"></section>
