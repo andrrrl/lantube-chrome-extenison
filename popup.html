@@ -93,7 +93,13 @@
 
         #player a:hover {
             background: rgb(112, 54, 54);
+
             cursor: pointer;
+        }
+
+        #player a.paused:hover span:first-child {
+            border-top: 10px solid rgb(112, 54, 54);
+            border-bottom: 10px solid rgb(112, 54, 54);
         }
 
         .paused span:first-child {
@@ -144,12 +150,18 @@
             height: 14px;
         }
 
+        #pause span:first-child:hover {
+            border-top: 10px solid rgb(112, 54, 54);
+            border-bottom: 10px solid rgb(112, 54, 54);
+        }
+
         #pause span:last-child {
             display: inline-block;
             background: #f53d3d;
             width: 5px;
             height: 14px;
         }
+
 
         #volDown,
         #volUp {
