@@ -3,6 +3,37 @@
 let page = document.getElementById('videos');
 let lista = document.createElement('ol');
 
+function throttled(delay, fn) {
+    let lastCall = 0;
+    return function (...args) {
+        const now = (new Date).getTime();
+        if (now - lastCall < delay) {
+            return;
+        }
+        lastCall = now;
+        return fn(...args);
+    }
+}
+
+function playBtn(apiURL, videoId, videoTitle) {
+    let self = this;
+    let playVideo = confirm(`¿Reproducir ${videoTitle}?`);
+    if (playVideo) {
+        fetch(`${apiURL}api/player/stop`).then((stopped) => {
+            if (stopped.ok) {
+                fetch(`${apiURL}api/player/${videoId}/play`).then((response) => {
+                    if (response.ok) {
+                        response.json().then(playing => {
+                            self.classList.add('playing');
+                            console.log(playing);
+                        });
+                    }
+                });
+            }
+        });
+    }
+}
+
 function constructOptions(apiURL, videos) {
 
     for (let video of videos) {
@@ -20,23 +51,11 @@ function constructOptions(apiURL, videos) {
         order.innerText = video.order;
 
         play.innerText = '▶'; // ‣
-        play.addEventListener('click', function () {
-            let self = this;
-            let playVideo = confirm(`¿Reproducir ${videoTitle}?`);
-            if (playVideo) {
-                fetch(`${apiURL}api/player/stop`).then((stopped) => {
-                    if (stopped.ok) {
-                        fetch(`${apiURL}api/player/${videoId}/play`).then((response) => {
-                            if (response.ok) {
-                                response.json().then(playing => {
-                                    self.classList.add('playing');
-                                    console.log(playing);
-                                });
-                            }
-                        });
-                    }
-                });
-            }
+
+        const playClick = throttled(200, playBtn);
+
+        play.addEventListener('click', () => {
+            playClick(apiURL, videoId, videoTitle);
         });
         lista.appendChild(title);
         title.prepend(play);
